@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
-import { createTask, pollTask, downloadImage } from "./lib/kieClient.mjs";
+import { generateImage, saveImage, extensionForMimeType } from "./lib/geminiClient.mjs";
 import { buildPrompt } from "./lib/styleGuide.mjs";
 
 function parseArgs(argv) {
@@ -19,42 +19,25 @@ function parseArgs(argv) {
   return args;
 }
 
-async function generateSlide({ apiKey, slide, slideNumber, total, aspectRatio, resolution, outputFormat, referenceImageUrl, useReference }) {
+async function generateSlide({ apiKey, slide, slideNumber, total, aspectRatio, referenceImage, useReference }) {
   const prompt = buildPrompt({
     role: slide.role,
     headline: slide.headline,
     body: slide.body,
     slideNumber,
     totalSlides: total,
+    aspectRatio,
   });
-
-  const payload = {
-    model: "nano-banana-pro",
-    input: {
-      prompt,
-      aspect_ratio: aspectRatio,
-      resolution,
-      output_format: outputFormat,
-    },
-  };
-  if (useReference && referenceImageUrl) {
-    payload.input.image_input = [referenceImageUrl];
-  }
 
   const maxRetries = 2;
   let lastError;
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      const taskId = await createTask(apiKey, payload);
-      const record = await pollTask(apiKey, taskId, {
-        intervalMs: 6000,
-        maxWaitMs: 8 * 60 * 1000,
-        onTick: (state, n) => console.log(`   ... estado: ${state} (chequeo ${n})`),
+      const image = await generateImage(apiKey, {
+        prompt,
+        referenceImage: useReference ? referenceImage : null,
       });
-      if (record.state === "success") {
-        return { record, prompt };
-      }
-      lastError = record.failMsg || "fallo desconocido";
+      return { image, prompt };
     } catch (err) {
       lastError = err.message;
     }
@@ -65,10 +48,10 @@ async function generateSlide({ apiKey, slide, slideNumber, total, aspectRatio, r
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  const apiKey = process.env.KIE_AI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    console.error("Error: falta la variable de entorno KIE_AI_API_KEY.");
+    console.error("Error: falta la variable de entorno GEMINI_API_KEY.");
     process.exit(1);
   }
   if (!args.input) {
@@ -86,12 +69,10 @@ async function main() {
   fs.mkdirSync(outDir, { recursive: true });
 
   const aspectRatio = spec.aspectRatio || "4:5";
-  const resolution = spec.resolution || "1K";
-  const outputFormat = spec.outputFormat || "png";
   const useReference = spec.useReferenceConsistency !== false;
 
   const manifest = { slug: spec.slug || null, createdAt: new Date().toISOString(), slides: [] };
-  let referenceImageUrl = null;
+  let referenceImage = null;
   const total = spec.slides.length;
 
   for (let i = 0; i < total; i++) {
@@ -101,30 +82,26 @@ async function main() {
     console.log(`\n[${slideNumber}/${total}] Generando slide "${slide.role}"...`);
 
     try {
-      const { record, prompt } = await generateSlide({
+      const { image, prompt } = await generateSlide({
         apiKey,
         slide,
         slideNumber,
         total,
         aspectRatio,
-        resolution,
-        outputFormat,
-        referenceImageUrl,
+        referenceImage,
         useReference,
       });
 
-      const resultJson = JSON.parse(record.resultJson);
-      const imageUrl = resultJson.resultUrls[0];
-      const destPath = path.join(outDir, `${fileBase}.${outputFormat}`);
-      await downloadImage(imageUrl, destPath);
-      referenceImageUrl = imageUrl;
+      const ext = extensionForMimeType(image.mimeType);
+      const destPath = path.join(outDir, `${fileBase}.${ext}`);
+      await saveImage(image.base64, destPath);
+      referenceImage = { base64: image.base64, mimeType: image.mimeType };
 
       manifest.slides.push({
         slideNumber,
         role: slide.role,
         status: "success",
         file: path.basename(destPath),
-        taskId: record.taskId,
         prompt,
       });
       console.log(`   OK guardado en ${destPath}`);

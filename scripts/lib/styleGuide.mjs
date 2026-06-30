@@ -27,7 +27,7 @@ function roleInstructions(role, slideNumber, totalSlides) {
  * fixed brand style so every slide stays visually consistent without the
  * caller having to repeat the style boilerplate each time.
  */
-export function buildPrompt({ role, headline, body, slideNumber, totalSlides }) {
+export function buildPrompt({ role, headline, body, slideNumber, totalSlides, aspectRatio }) {
   const parts = [
     roleInstructions(role, slideNumber, totalSlides),
     `Texto a renderizar EXACTAMENTE en la imagen (sin errores ortográficos, tipografía bold legible): titular: "${headline}".`,
@@ -37,6 +37,7 @@ export function buildPrompt({ role, headline, body, slideNumber, totalSlides }) 
     `Identidad de marca: ${BRAND.mascot}.`,
     `Tipografía: ${BRAND.typography}.`,
     `Contexto: imagen para un post de Instagram en formato carrusel de un ${BRAND.channel}.`,
+    `Formato de imagen: relación de aspecto vertical ${aspectRatio || '4:5'} (formato feed de Instagram), encuadrar toda la composición dentro de esa proporción.`,
     'Composición: diseño vertical centrado, jerarquía visual clara, fondo no saturado de elementos para no competir con el texto, alta legibilidad incluso en miniatura.',
   ].filter(Boolean);
 
