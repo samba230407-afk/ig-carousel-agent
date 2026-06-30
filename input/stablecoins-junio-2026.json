@@ -1,0 +1,39 @@
+{
+  "slug": "stablecoins-junio-2026",
+  "aspectRatio": "4:5",
+  "resolution": "1K",
+  "outputFormat": "png",
+  "useReferenceConsistency": true,
+  "slides": [
+    {
+      "role": "cover",
+      "headline": "El cambio silencioso de las cripto",
+      "body": "Lo que nadie te está contando esta semana"
+    },
+    {
+      "role": "content",
+      "headline": "Las stablecoins ya superan los $300.000M",
+      "body": "Un mercado que crece más rápido que Bitcoin"
+    },
+    {
+      "role": "content",
+      "headline": "Lagarde vs. stablecoins privadas",
+      "body": "El BCE empuja el euro digital como alternativa"
+    },
+    {
+      "role": "content",
+      "headline": "$8.000M salieron de BTC y ETFs",
+      "body": "Instituciones reducen riesgo antes del verano"
+    },
+    {
+      "role": "content",
+      "headline": "Bitcoin se recupera cerca de $67.000",
+      "body": "El sentimiento mejora con menos tensión geopolítica"
+    },
+    {
+      "role": "cta",
+      "headline": "Síguenos para más análisis cripto",
+      "body": "Camilo Mondragón · Principia"
+    }
+  ]
+}

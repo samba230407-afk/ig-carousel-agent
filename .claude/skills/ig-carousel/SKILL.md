@@ -1,6 +1,6 @@
 ---
 name: ig-carousel
-description: Genera carruseles de Instagram (portada + slides de contenido + CTA) usando Nano Banana Pro vía la API de Kie AI. Úsalo cuando el usuario pida crear un carrusel para Instagram a partir de un tema, una noticia, un guion o un video (ej. "crea un carrusel sobre las noticias de hoy", "hazme un carrusel sobre este guion", "arma un carrusel de este video"). Mantiene un estilo visual coherente entre slides: ilustración animada, paleta roja y blanca, para un canal de Instagram de Inteligencia Artificial.
+description: Genera carruseles de Instagram (portada + slides de contenido + CTA) usando Nano Banana Pro vía la API de Kie AI, para la marca personal de Camilo Mondragón (Principia) sobre criptomonedas e inversión digital. Úsalo cuando el usuario pida crear un carrusel a partir de un tema, una noticia, un guion o un video (ej. "crea un carrusel sobre las noticias de hoy", "hazme un carrusel sobre este guion"). Mantiene un estilo visual coherente entre slides: ilustración animada, paleta negro y dorado, estética fintech/cripto de autoridad.
 ---
 
 # Skill: Generador de Carruseles de Instagram (Nano Banana Pro / Kie AI)
@@ -46,8 +46,8 @@ Reglas de coherencia narrativa:
 Escribe el copy en español, tono claro y directo, sin errores ortográficos.
 No repitas literalmente el texto de marca/estilo: eso ya lo agrega el script
 automáticamente (ver `scripts/lib/styleGuide.mjs`) para mantener consistencia
-visual (animado, rojo y blanco, canal de IA) en TODAS las slides sin que tengas
-que repetirlo tú.
+visual (animado, negro y dorado, estética fintech/cripto) en TODAS las slides
+sin que tengas que repetirlo tú.
 
 ### 4. Armar el archivo de entrada `slides.json`
 Crea un archivo temporal (por ejemplo en `input/<slug>.json`) con esta forma:
