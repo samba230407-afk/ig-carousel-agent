@@ -1,0 +1,13 @@
+{
+  "name": "ig-carousel-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Agente/skill para generar carruseles de Instagram con Nano Banana Pro vía Kie AI.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "generate": "node scripts/generate-carousel.mjs"
+  }
+}

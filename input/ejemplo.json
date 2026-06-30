@@ -1,0 +1,15 @@
+{
+  "slug": "ejemplo",
+  "aspectRatio": "4:5",
+  "resolution": "1K",
+  "outputFormat": "png",
+  "useReferenceConsistency": true,
+  "slides": [
+    { "role": "cover", "headline": "¿La IA ya piensa por ti?", "body": "" },
+    { "role": "content", "headline": "Qué cambió esta semana", "body": "Resumen del avance clave" },
+    { "role": "content", "headline": "Por qué importa", "body": "El impacto real para ti" },
+    { "role": "content", "headline": "Lo bueno y lo riesgoso", "body": "Una mirada balanceada" },
+    { "role": "content", "headline": "Qué viene después", "body": "Lo que se espera a futuro" },
+    { "role": "cta", "headline": "Síguenos para más de IA", "body": "" }
+  ]
+}
